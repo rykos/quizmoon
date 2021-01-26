@@ -1,0 +1,30 @@
+.logo {
+    cursor: pointer;
+    color: #fffefd;
+    transition: 300ms;
+    padding: 15px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+}
+
+.logo:hover {
+    border: 2px solid #ebebeb;
+}
+
+.top-banner-item {
+    color: #fffefd;
+    transition: 300ms;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    padding: 15px;
+    cursor: pointer;
+}
+
+.top-banner-item:hover {
+    border: 2px solid #ebebeb;
+    padding: 15px;
+}
+
+.top-banner {
+    background-color: #fb8500;
+}

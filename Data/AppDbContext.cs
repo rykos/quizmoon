@@ -11,6 +11,22 @@ namespace quizmoon.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Quiz>()
+                .HasMany(q => q.QuizQuestions)
+                .WithOne(qq => qq.Quiz)
+                .HasForeignKey(qq => qq.QuizId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<QuizQuestion>()
+                .HasMany(qq => qq.Answers)
+                .WithOne(qa => qa.QuizQuestion)
+                .HasForeignKey(qa => qa.QuizQuestionId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
+
+        public DbSet<Quiz> Quizzes { get; set; }
+        public DbSet<QuizQuestion> QuizQuestions { get; set; }
+        public DbSet<QuizAnswer> QuizAnswers { get; set; }
     }
 }

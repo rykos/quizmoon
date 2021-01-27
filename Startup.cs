@@ -30,7 +30,7 @@ namespace quizmoon
             {
                 options.AddDefaultPolicy(builder =>
                 {
-                    builder.WithOrigins("localhost", "http://localhost", "https://localhost").AllowAnyHeader().AllowAnyMethod();
+                    builder.WithOrigins("localhost", "http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod();
                 });
             });
 

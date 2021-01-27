@@ -1,12 +1,14 @@
 <div class="p-0 container-fluid d-flex align-items-center justify-content-center" style="flex: 1; height: 100%;">
     <div class="d-flex flex-column login-box mb-5">
-        <h4 class="text-center" style="color: #023047;">LOGIN</h4>
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Username">
-        </div>
-        <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="Password">
-        </div>
-        <button class="btn btn-success">login</button>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <h4 class="text-center" style="color: #023047;">LOGIN</h4>
+            <div class="form-group">
+                <input type="text" formControlName="username" placeholder="Username" class="form-control" >
+            </div>
+            <div class="form-group">
+                <input type="password" formControlName="password" placeholder="Password" class="form-control">
+            </div>
+            <button class="btn btn-success">login</button>
+        </form>
     </div>
 </div>

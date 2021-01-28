@@ -11,6 +11,7 @@ namespace quizmoon.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.HasPostgresExtension("uuid-ossp");
 
             builder.Entity<Quiz>()
                 .HasMany(q => q.QuizQuestions)

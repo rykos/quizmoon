@@ -17,8 +17,7 @@ namespace quizmoon.Models
 
         public IFormFile Avatar { get; set; }
 
-        [Required]
-        [MinLength(1)]
-        public List<QuizQuestionDTO> QuizQuestions { get; set; }
+        public QuizQuestionDTO[] QuizQuestions { get; set; }
+        public object[] QuizQuestionsObj { get; set; }
     }
 }

@@ -1,3 +1,5 @@
+import { environment } from './../../environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Quiz } from './../../_models/quiz/Quiz';
 import { Component, OnInit } from '@angular/core';
 import { QuizQuestion } from 'src/_models/quiz/QuizQuestion';
@@ -13,24 +15,25 @@ export class QuizCrudComponent implements OnInit {
   //quizAnswers: FormArray[];
   quiz: Quiz = new Quiz();
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient) { }
 
   ngOnInit(): void {
     this.quizForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      avatar: [''],
-      quizQuestions: this.formBuilder.array([])
+      Name: ['Title', Validators.required],
+      Category: ['category'],
+      Avatar: [null],
+      QuizQuestions: this.formBuilder.array([])
     });
   }
 
   quizQuestions(): FormArray {
-    return this.quizForm.get('quizQuestions') as FormArray;
+    return this.quizForm.get('QuizQuestions') as FormArray;
   }
 
   newQuizQuestion(): FormGroup {
     return this.formBuilder.group({
-      text: '',
-      image: '',
+      text: 'question text',
+      image: null,
       answers: this.formBuilder.array([])
     });
   }
@@ -45,8 +48,8 @@ export class QuizCrudComponent implements OnInit {
 
   newAnswer(): FormGroup {
     return this.formBuilder.group({
-      text: '',
-      image: ''
+      text: 'answer text',
+      image: null
     });
   }
 
@@ -55,6 +58,30 @@ export class QuizCrudComponent implements OnInit {
   }
 
   save() {
-    console.log(this.quizForm);
+    console.log(this.quizForm.value);
+    let x = JSON.parse(this.quizForm.value);
+    console.log(x);
+    // let fd = new FormData();
+    // fd.append("Name", this.quizForm.value.Name);
+    // fd.append("Category", this.quizForm.value.Category);
+    // for (let i = 0; i < this.quizForm.value.QuizQuestions.length; i++) {
+    //   fd.append("QuizQuestions", JSON.stringify(this.quizForm.value.QuizQuestions[i]));
+    //   fd.append("QuizQuestionsObj", i.toString());
+    // }
+    // console.log(fd.getAll("QuizQuestions"));
+    // this.httpClient.post(`${environment.apiUrl}/quiz/new`, fd).subscribe(x => console.log(x));
+    //{ headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+  }
+
+  fc(files) {
+    let file = files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
   }
 }

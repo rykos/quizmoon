@@ -13,5 +13,15 @@ namespace quizmoon.Models
 
         public QuizQuestion QuizQuestion { get; set; }
         public long QuizQuestionId { get; set; }
+
+        public object DTO()
+        {
+            return new
+            {
+                this.Id,
+                this.Text,
+                this.Correct
+            };
+        }
     }
 }

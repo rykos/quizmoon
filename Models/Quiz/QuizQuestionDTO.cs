@@ -13,7 +13,7 @@ namespace quizmoon.Models
         public string Text { get; set; }
 
         public IFormFile Image { get; set; }
-        public List<QuizAnswerDTO> Answers { get; set; }
+        public QuizAnswerDTO[] Answers { get; set; }
 
         public QuizQuestion ToQuizQuestion(Quiz quiz)
         {

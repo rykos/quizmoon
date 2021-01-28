@@ -1,10 +1,11 @@
 <div class="container-fluid d-flex align-content-center align-items-center justify-content-center">
     <form class="d-flex flex-column" [formGroup]="quizForm">
-        <input type="text" placeholder="Title">
-        <input type="text" placeholder="Category">
+        <input type="text" placeholder="Title" formControlName="Name">
+        <input type="text" placeholder="Category" formControlName="Category">
+        <input type="file" formControlName="Avatar" (change)="fc($event.target.files)">
 
         <!--  -->
-        <div formArrayName="quizQuestions">
+        <div formArrayName="QuizQuestions">
             <div *ngFor="let question of quizQuestions().controls; let qIndex = index;">
                 <!-- question -->
                 <div [formGroupName]="qIndex" class="d-flex flex-column border p-3">

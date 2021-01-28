@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace quizmoon.Models
 {
@@ -10,8 +11,18 @@ namespace quizmoon.Models
         public string Text { get; set; }
         public byte[] Image { get; set; }
         public List<QuizAnswer> Answers { get; set; }
-        
+
         public Quiz Quiz { get; set; }
         public long QuizId { get; set; }
+
+        public object DTO()
+        {
+            return new
+            {
+                this.Id,
+                this.Text,
+                Answers = this.Answers?.Select(a => a.DTO()).ToArray()
+            };
+        }
     }
 }

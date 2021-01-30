@@ -1,0 +1,38 @@
+<div *ngIf="question" class="d-flex align-content-center justify-content-center">
+    <div class="col-5">
+        <form (ngSubmit)="onNgSubmit()">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text">Question Type</label>
+                </div>
+                <select class="custom-select" (change)="selectChange($event.target.value)">
+                    <option selected>Text</option>
+                    <option>Image</option>
+                </select>
+            </div>
+            <div class="input-group mb-3" *ngIf="questionType == 'Text'">
+                <input type="text" class="form-control" placeholder="Question" [(ngModel)]="question.text" name="text">
+            </div>
+            <div *ngIf="questionType == 'Image'">
+                <label>Image</label>
+                <input type="file">
+            </div>
+            <button class="btn btn-success w-100">Save</button>
+        </form>
+        <!-- answers -->
+        <div>
+            <div *ngFor="let answer of answers; let i = index;" class="border py-3 px-1">
+                <form (ngSubmit)=onAnswerSubmit(answer.id)>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" [(ngModel)]="answers[i].text" name="text">
+                    </div>
+                    <div>
+                        <label>Correct</label>
+                        <input type="checkbox" [(ngModel)]="answers[i].correct" name="correct">
+                    </div>
+                    <button class="btn btn-success">s</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

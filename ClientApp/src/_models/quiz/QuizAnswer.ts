@@ -3,4 +3,5 @@ export class QuizAnswer {
     text: string;
     image: File;
     correct: boolean;
+    textType?: boolean;
 }

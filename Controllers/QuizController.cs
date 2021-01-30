@@ -8,6 +8,7 @@ using quizmoon.Helpers;
 using quizmoon.Models;
 using System;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace quizmoon.Controllers
 {
@@ -54,7 +55,8 @@ namespace quizmoon.Controllers
             {
                 CreatorId = user.Id,
                 Name = newQuizDTO.Name,
-                Category = newQuizDTO.Category
+                Category = newQuizDTO.Category,
+                Image = SysHelper.FileToByteArray(newQuizDTO.Avatar)
             };
             this.dbContext.Quizzes.Add(quiz);
             this.dbContext.SaveChanges();
@@ -70,13 +72,16 @@ namespace quizmoon.Controllers
             if (user == default)
                 return Unauthorized();
             Quiz quiz = this.GetQuiz(quizId);
+            if (quiz == default)
+                return NotFound();
             if (quiz.CreatorId != user.Id)
                 return Unauthorized(ResponseDTO.Error("Dont even try to modify other people quizzes"));
 
             QuizQuestion qq = new QuizQuestion()
             {
                 QuizId = quizId,
-                Text = newQuestion.Text ?? ""
+                Text = newQuestion.Text ?? "",
+                Image = SysHelper.FileToByteArray(newQuestion.Image)
             };
 
             this.dbContext.QuizQuestions.Add(qq);
@@ -94,6 +99,8 @@ namespace quizmoon.Controllers
                 return Unauthorized();
             long quizId = this.dbContext.QuizQuestions.Select(qq => new { qq.Id, qq.QuizId }).FirstOrDefault(qq => qq.Id == questionId).QuizId;
             Quiz quiz = this.GetQuiz(quizId);
+            if (quiz == default)
+                return NotFound();
             if (quiz.CreatorId != user.Id)
                 return Unauthorized(ResponseDTO.Error("Dont even try to modify other people quizzes"));
 
@@ -101,13 +108,26 @@ namespace quizmoon.Controllers
             {
                 QuizQuestionId = questionId,
                 Text = answerDTO.Text ?? "",
-                Correct = answerDTO.Correct
+                Correct = answerDTO.Correct,
+                Image = SysHelper.FileToByteArray(answerDTO.Image)
             };
 
             this.dbContext.QuizAnswers.Add(qa);
             this.dbContext.SaveChanges();
 
             return Ok(qa);
+        }
+
+        [HttpGet]
+        [Route("my")]
+        public IActionResult MyQuizzes()
+        {
+            ApplicationUser user = this.GetUser();
+            if (user == default)
+                return Unauthorized();
+            object[] quizzes = this.dbContext.Quizzes.Select(q => new { q.CreatorId, q.Id, q.Name })
+                .Where(q => q.CreatorId == user.Id).Select(q => new { q.Id, q.Name }).ToArray();
+            return Ok(quizzes);
         }
 
         [HttpGet]
@@ -133,6 +153,7 @@ namespace quizmoon.Controllers
             return Ok(question.DTO());
         }
 
+        //
         private ApplicationUser GetUser()
         {
             ApplicationUser user = this.dbContext.Users.FirstOrDefault(u => u.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value);

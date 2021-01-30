@@ -12,6 +12,8 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { QuizCrudComponent } from './quiz-crud/quiz-crud.component';
 import { ProfileComponent } from './profile/profile.component';
+import { EditQuizComponent } from './edit-quiz/edit-quiz.component';
+import { EditQuestionComponent } from './edit-question/edit-question.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { ProfileComponent } from './profile/profile.component';
     NavigationComponent,
     RegisterComponent,
     QuizCrudComponent,
-    ProfileComponent
+    ProfileComponent,
+    EditQuizComponent,
+    EditQuestionComponent
   ],
   imports: [
     BrowserModule,

@@ -1,3 +1,5 @@
+import { EditQuestionComponent } from './edit-question/edit-question.component';
+import { EditQuizComponent } from './edit-quiz/edit-quiz.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './../_helpers/auth.guard';
@@ -10,7 +12,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  { path: 'quiz/new', component: QuizCrudComponent, canActivate: [AuthGuard] }
+  { path: 'quiz/new', component: QuizCrudComponent, canActivate: [AuthGuard] },
+  { path: 'edit/quiz/:id', component: EditQuizComponent, canActivate: [AuthGuard] },
+  { path: 'edit/question/:id', component: EditQuestionComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

@@ -1,0 +1,13 @@
+<div class="container align-items-center align-content-center" *ngIf="quiz">
+    <h3>Edit {{quiz.name}}</h3>
+
+    <!-- questions -->
+    <div *ngFor="let question of quiz.quizQuestions" class="d-flex">
+        <div class="border rounded p-5" style="cursor: pointer;" routerLink="/edit/question/{{question.id}}">
+            {{question.text}}
+        </div>
+    </div>
+    <div style="width: 100px; height: 100px; background-color: gray;" class="d-flex justify-content-center align-items-center">
+        <h1>+1</h1>
+    </div>
+</div>

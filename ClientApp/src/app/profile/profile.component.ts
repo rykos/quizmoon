@@ -1,3 +1,4 @@
+import { AccountService } from './../../_services/account.service';
 import { User } from './../../_models/auth/User';
 import { AuthenticationService } from 'src/_services/authentication.service';
 import { Component, OnInit } from '@angular/core';
@@ -9,14 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
   user: User;
-  constructor(private authenticationService: AuthenticationService) { 
+  quizzes: any[];
+  constructor(private authenticationService: AuthenticationService, private accountService: AccountService) {
     this.user = authenticationService.currentUserValue;
+    this.accountService.myQuizzesIds().subscribe(x => {
+      this.quizzes = x;
+    });
   }
 
   ngOnInit(): void {
   }
 
-  logout(){
+  logout() {
     this.authenticationService.logout();
   }
 }

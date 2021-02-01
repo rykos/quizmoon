@@ -23,26 +23,7 @@ namespace quizmoon.Controllers
             this.dbContext = dbContext;
         }
 
-        // [HttpPost]
-        // [Route("new")]
-        // public void NewQuiz([FromForm] QuizDTO quiz)
-        // {
-        //     ApplicationUser user = this.dbContext.Users.FirstOrDefault(u => u.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value);
-        //     if (user == default)
-        //         return;
-
-        //     Quiz q = new Quiz()
-        //     {
-        //         CreatorId = user.Id,
-        //         Name = quiz.Name,
-        //         Category = quiz.Category
-        //     };
-        //     q.QuizQuestions = quiz.QuizQuestions.Select(qq => qq.ToQuizQuestion(q)).ToList();
-        //     q.Image = SysHelper.FileToByteArray(quiz.Avatar);
-        //     this.dbContext.Quizzes.Add(q);
-        //     this.dbContext.SaveChanges();
-        // }
-
+        #region Create
         [HttpPost]
         [Route("create")]
         public IActionResult CreateQuiz([FromForm] NewQuizDTO newQuizDTO)
@@ -61,7 +42,7 @@ namespace quizmoon.Controllers
             this.dbContext.Quizzes.Add(quiz);
             this.dbContext.SaveChanges();
 
-            return Ok(quiz);
+            return Ok(quiz.DTO());
         }
 
         [HttpPost]
@@ -87,7 +68,7 @@ namespace quizmoon.Controllers
             this.dbContext.QuizQuestions.Add(qq);
             this.dbContext.SaveChanges();
 
-            return Ok(qq);
+            return Ok(qq.DTO());
         }
 
         [HttpPost]
@@ -115,8 +96,89 @@ namespace quizmoon.Controllers
             this.dbContext.QuizAnswers.Add(qa);
             this.dbContext.SaveChanges();
 
-            return Ok(qa);
+            return Ok(qa.DTO());
         }
+        #endregion
+
+        #region Update
+        [HttpPut]
+        [Route("update")]
+        public IActionResult UpdateQuiz([FromForm] NewQuizDTO newQuizDTO)
+        {
+            if (newQuizDTO.Id == default)
+                return BadRequest(ResponseDTO.Error("missing id attribute"));
+            ApplicationUser user = this.GetUser();
+            if (user == default)
+                return Unauthorized();
+            Quiz quiz = this.GetQuiz(newQuizDTO.Id);
+            if (quiz == default)
+                return NotFound();
+
+            quiz.CreatorId = user.Id;
+            quiz.Name = newQuizDTO.Name;
+            quiz.Category = newQuizDTO.Category;
+            quiz.Image = SysHelper.FileToByteArray(newQuizDTO.Avatar);
+
+            this.dbContext.Quizzes.Update(quiz);
+            this.dbContext.SaveChanges();
+
+            return Ok(quiz.DTO());
+        }
+
+        [HttpPut]
+        [Route("update/question/{quizId}")]
+        public IActionResult UpdateQuestion(long quizId, [FromForm] NewQuestionDTO newQuestion)
+        {
+            if (newQuestion.Id == default)
+                return BadRequest(ResponseDTO.Error("missing id attribute"));
+            ApplicationUser user = this.GetUser();
+            if (user == default)
+                return Unauthorized();
+            Quiz quiz = this.GetQuiz(quizId);
+            QuizQuestion quizQuestion = this.dbContext.QuizQuestions.FirstOrDefault(qq => qq.Id == newQuestion.Id);
+            if (quiz == default || quizQuestion == default)
+                return NotFound();
+            if (quiz.CreatorId != user.Id)
+                return Unauthorized(ResponseDTO.Error("Dont even try to modify other people quizzes"));
+
+            quizQuestion.Text = newQuestion.Text ?? "";
+            if (newQuestion.Image != default)
+                quizQuestion.Image = SysHelper.FileToByteArray(newQuestion.Image);
+
+            this.dbContext.QuizQuestions.Update(quizQuestion);
+            this.dbContext.SaveChanges();
+
+            return Ok(quizQuestion.DTO());
+        }
+
+        [HttpPut]
+        [Route("update/answer/{questionId}")]
+        public IActionResult UpdateAnswer(long questionId, [FromForm] NewAnswerDTO answerDTO)
+        {
+            if (answerDTO.Id == default)
+                return BadRequest(ResponseDTO.Error("missing id attribute"));
+            ApplicationUser user = this.GetUser();
+            if (user == default)
+                return Unauthorized();
+            QuizAnswer qa = this.dbContext.QuizAnswers.FirstOrDefault(qa => qa.Id == answerDTO.Id);
+            long quizId = this.dbContext.QuizQuestions.Select(qq => new { qq.Id, qq.QuizId }).FirstOrDefault(qq => qq.Id == questionId).QuizId;
+            Quiz quiz = this.GetQuiz(quizId);
+            if (quiz == default || qa == default)
+                return NotFound();
+            if (quiz.CreatorId != user.Id)
+                return Unauthorized(ResponseDTO.Error("Dont even try to modify other people quizzes"));
+
+            qa.Text = answerDTO.Text ?? "";
+            qa.Correct = answerDTO.Correct;
+            if (answerDTO.Image != default)
+                qa.Image = SysHelper.FileToByteArray(answerDTO.Image);
+
+            this.dbContext.QuizAnswers.Update(qa);
+            this.dbContext.SaveChanges();
+
+            return Ok(qa.DTO());
+        }
+        #endregion
 
         [HttpGet]
         [Route("my")]

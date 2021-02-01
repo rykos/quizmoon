@@ -61,27 +61,5 @@ export class QuizCrudComponent implements OnInit {
     console.log(this.quizForm.value);
     let x = JSON.parse(this.quizForm.value);
     console.log(x);
-    // let fd = new FormData();
-    // fd.append("Name", this.quizForm.value.Name);
-    // fd.append("Category", this.quizForm.value.Category);
-    // for (let i = 0; i < this.quizForm.value.QuizQuestions.length; i++) {
-    //   fd.append("QuizQuestions", JSON.stringify(this.quizForm.value.QuizQuestions[i]));
-    //   fd.append("QuizQuestionsObj", i.toString());
-    // }
-    // console.log(fd.getAll("QuizQuestions"));
-    // this.httpClient.post(`${environment.apiUrl}/quiz/new`, fd).subscribe(x => console.log(x));
-    //{ headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
-  }
-
-  fc(files) {
-    let file = files[0];
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
   }
 }

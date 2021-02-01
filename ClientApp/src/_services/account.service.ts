@@ -24,4 +24,16 @@ export class AccountService {
   questionById(questionId: number) {
     return this.httpClient.get<QuizQuestion>(`${environment.apiUrl}/quiz/question/${questionId}`);
   }
+
+  createQuiz() {
+    let fd = new FormData();
+    fd.append("name", "new quiz");
+    return this.httpClient.post(`${environment.apiUrl}/quiz/create`, fd);
+  }
+
+  createQuestion(quizId: number) {
+    let fd = new FormData();
+    fd.append("text", "New question");
+    return this.httpClient.post(`${environment.apiUrl}/quiz/create/question/${quizId}`, fd);
+  }
 }

@@ -2,50 +2,9 @@
     <form class="d-flex flex-column" [formGroup]="quizForm">
         <input type="text" placeholder="Title" formControlName="Name">
         <input type="text" placeholder="Category" formControlName="Category">
-        <input type="file" formControlName="Avatar" (change)="fc($event.target.files)">
-
-        <!--  -->
-        <div formArrayName="QuizQuestions">
-            <div *ngFor="let question of quizQuestions().controls; let qIndex = index;">
-                <!-- question -->
-                <div [formGroupName]="qIndex" class="d-flex flex-column border p-3">
-                    Question {{qIndex}}
-                    <input type="text" formControlName="text">
-                    <input type="file" formControlName="image">
-                    <!-- answer -->
-                    <div formArrayName="answers">
-                        <div *ngFor="let answer of quizAnswers(qIndex).controls; let aIndex = index;"
-                            class="p-2 border">
-                            <div [formGroupName]="aIndex" class="d-flex flex-column">
-                                Answer {{aIndex}}
-                                <input type="text" formControlName="text">
-                                <input type="file" formControlName="image">
-                            </div>
-                        </div>
-                    </div>
-                    <button class="btn btn-success" (click)="addAnswer(qIndex)">New answer</button>
-                </div>
-            </div>
-        </div>
-        <!--  -->
+        <input type="file" formControlName="Avatar">
 
         <button class="btn btn-success" (click)="addQuizQuestion()">New question</button>
         <button class="btn btn-success" (click)="save()">Save</button>
     </form>
 </div>
-
-<!-- <div formArrayName="quizQuestions" class="border p-3 rounded"
-    *ngFor="let question of newQuizForm.get('quizQuestions')['controls']; let i = index;">
-    <div [formGroupName]="i">
-        <input formControlName="text" placeholder="question text">
-        <input formControlName="image" type="file">
-    </div>
-
-    <div formArrayName="quizAnswers" class="border p-3 rounded">
-        <div [fromGroupName]="i">
-
-        </div>
-        <button class="btn btn-success" (click)="newAnswer(i)">New question</button>
-    </div>
-
-</div> -->

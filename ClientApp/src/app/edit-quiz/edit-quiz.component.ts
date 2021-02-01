@@ -19,4 +19,11 @@ export class EditQuizComponent implements OnInit {
     });
   }
 
+  newQuestion() {
+    console.log("dupa");
+    this.accountService.createQuestion(this.quiz.id).subscribe(x => {
+      console.log(x);
+    });
+  }
+
 }

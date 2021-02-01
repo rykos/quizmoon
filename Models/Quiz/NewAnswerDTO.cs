@@ -5,6 +5,7 @@ namespace quizmoon.Models
 {
     public class NewAnswerDTO
     {
+        public long Id { get; set; }
         public string Text { get; set; }
         public IFormFile Image { get; set; }
         [Required]

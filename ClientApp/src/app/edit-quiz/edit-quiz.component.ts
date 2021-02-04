@@ -14,6 +14,7 @@ export class EditQuizComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountService.quizById(this.route.snapshot.params.id).subscribe(q => {
+      q.quizQuestions.sort((a, b) => a.id - b.id);
       this.quiz = q;
       console.log(q);
     });
@@ -22,6 +23,12 @@ export class EditQuizComponent implements OnInit {
   newQuestion() {
     console.log("dupa");
     this.accountService.createQuestion(this.quiz.id).subscribe(x => {
+      this.quiz.quizQuestions.push(x);
+    });
+  }
+
+  updateQuiz() {
+    this.accountService.updateQuiz(this.quiz).subscribe(x => {
       console.log(x);
     });
   }

@@ -1,13 +1,19 @@
 <div class="container align-items-center align-content-center" *ngIf="quiz">
-    <h3>Edit {{quiz.name}}</h3>
-
+    <div>
+        <h3>Edit <input type="text" [(ngModel)]="quiz.name" name="name"></h3>
+        <h4>Category <input type="text" [(ngModel)]="quiz.category" name="category"></h4>
+        <button class="btn btn-primary" (click)="updateQuiz()">Save</button>
+    </div>
     <!-- questions -->
-    <div *ngFor="let question of quiz.quizQuestions" class="d-flex">
-        <div class="border rounded p-5" style="cursor: pointer;" routerLink="/edit/question/{{question.id}}">
+    <div class="d-flex flex-wrap">
+        <div *ngFor="let question of quiz.quizQuestions"
+            class="border rounded p-5 align-items-center align-content-center d-flex"
+            style="cursor: pointer; width: 200px;" routerLink="/edit/question/{{question.id}}">
             {{question.text}}
         </div>
     </div>
-    <div style="width: 100px; height: 100px; background-color: gray; cursor: pointer;" class="d-flex justify-content-center align-items-center" (click)="newQuestion()">
+    <div style="width: 100px; height: 100px; background-color: gray; cursor: pointer;"
+        class="d-flex justify-content-center align-items-center" (click)="newQuestion()">
         <h1>+1</h1>
     </div>
 </div>

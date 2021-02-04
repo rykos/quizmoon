@@ -1,3 +1,4 @@
+import { AccountService } from './../../_services/account.service';
 import { environment } from './../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Quiz } from './../../_models/quiz/Quiz';
@@ -15,7 +16,7 @@ export class QuizCrudComponent implements OnInit {
   //quizAnswers: FormArray[];
   quiz: Quiz = new Quiz();
 
-  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient) { }
+  constructor(private formBuilder: FormBuilder, private accountService: AccountService) { }
 
   ngOnInit(): void {
     this.quizForm = this.formBuilder.group({
@@ -23,6 +24,9 @@ export class QuizCrudComponent implements OnInit {
       Category: ['category'],
       Avatar: [null],
       QuizQuestions: this.formBuilder.array([])
+    });
+    this.accountService.createQuiz().subscribe(x => {
+      this.quiz = <Quiz>x;
     });
   }
 

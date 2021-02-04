@@ -1,38 +1,59 @@
 <div *ngIf="question" class="d-flex align-content-center justify-content-center">
     <div class="col-5">
+        <button class="btn btn-secondary" routerLink="/edit/quiz/{{question.quizId}}">Back</button>
         <form (ngSubmit)="onNgSubmit()">
             <div class="input-group mb-3">
+                <!--  -->
                 <div class="input-group-prepend">
                     <label class="input-group-text">Question Type</label>
                 </div>
-                <select class="custom-select" (change)="selectChange($event.target.value)">
+                <select class="custom-select" (change)="selectChange($event.target.value, question, 'type')">
+                    <option selected>Text</option>
+                    <option>Image</option>
+                </select>
+                <!--  -->
+                <div class="input-group-prepend">
+                    <label class="input-group-text">Answers Type</label>
+                </div>
+                <select class="custom-select" (change)="selectChange($event.target.value, question, 'answersType')">
                     <option selected>Text</option>
                     <option>Image</option>
                 </select>
             </div>
-            <div class="input-group mb-3" *ngIf="questionType == 'Text'">
+            <div class="input-group mb-3" *ngIf="question.type == 'Text'">
                 <input type="text" class="form-control" placeholder="Question" [(ngModel)]="question.text" name="text">
             </div>
-            <div *ngIf="questionType == 'Image'">
+            <div *ngIf="question.type == 'Image'">
                 <label>Image</label>
-                <input type="file">
+                <input type="file" (change)="handleFileUpload($event.target.files, question)">
             </div>
             <button class="btn btn-success w-100">Save</button>
         </form>
         <!-- answers -->
         <div>
-            <div *ngFor="let answer of answers; let i = index;" class="border py-3 px-1">
+            <div *ngFor="let answer of answers; let i = index;" class="border py-3 px-1"
+                [ngClass]="{'dirty-answer': answer.dirty}">
                 <form (ngSubmit)=onAnswerSubmit(answer.id)>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" [(ngModel)]="answers[i].text" name="text">
+                    <!-- text -->
+                    <div class="input-group mb-3" *ngIf="question.answersType == 'Text'">
+                        <input type="text" class="form-control" [(ngModel)]="answers[i].text" name="text"
+                            (ngModelChange)="answerChange($event, answer)">
                     </div>
+                    <!-- image -->
+                    <div class="input-group mb-3" *ngIf="question.answersType == 'Image'">
+                        <label>Image</label>
+                        <input type="file" (change)="handleFileUpload($event.target.files, answer)">
+                    </div>
+                    <!-- correct -->
                     <div>
                         <label>Correct</label>
-                        <input type="checkbox" [(ngModel)]="answers[i].correct" name="correct">
+                        <input type="checkbox" [(ngModel)]="answers[i].correct" name="correct"
+                            (ngModelChange)="answerChange($event, answer)">
                     </div>
                     <button class="btn btn-success">s</button>
                 </form>
             </div>
         </div>
+        <button class="btn btn-primary w-100" (click)="createAnswer()">New answer</button>
     </div>
 </div>

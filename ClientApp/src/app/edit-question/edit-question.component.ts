@@ -10,7 +10,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./edit-question.component.css']
 })
 export class EditQuestionComponent implements OnInit {
-  questionType: string = "Text";
   question: QuizQuestion;
   answers: QuizAnswer[];
 
@@ -19,23 +18,52 @@ export class EditQuestionComponent implements OnInit {
   ngOnInit(): void {
     let id = this.route.snapshot.params.id;
     this.accountService.questionById(id).subscribe(question => {
-      this.question = question;
+      console.log(question);
+      this.question = new QuizQuestion(<QuizQuestion>question);
       this.answers = question.answers;
-      console.log(this.question);
     });
   }
 
-  selectChange(x) {
-    this.questionType = x;
-    console.log(x);
+  selectChange(value, target, type) {
+    if (type == "type")
+      target.type = value;
+    else if (type == "answersType")
+      target.answersType = value;
   }
 
   onNgSubmit() {
+    this.accountService.updateQuestion(this.question).subscribe(x => { });
     console.log(this.question);
   }
 
-  onAnswerSubmit(questionId: number) {
-    console.log(questionId);
+  onAnswerSubmit(answerId: number) {
+    console.log(answerId);
+    let answer = this.answers.find(x => x.id == answerId);
+    console.log(this.question.id);
+
+    this.accountService.updateAnswer(answer, this.question.id).subscribe(x => {
+      console.log(x);
+      answer = x;
+      this.answers.find(x => x.id == answerId).dirty = false;
+    });
+  }
+
+  createAnswer() {
+    console.log("create answer");
+    this.accountService.createAnswer(this.question.id).subscribe(x => {
+      this.question.answers.push(x);
+    });
+  }
+
+  answerChange(eve, answer: QuizAnswer) {
+    console.log(eve);
+    console.log(answer);
+    answer.dirty = true;
+  }
+
+
+  handleFileUpload(files, target: any) {
+    target.image = files[0];
   }
 
 }

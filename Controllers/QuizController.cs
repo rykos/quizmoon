@@ -126,16 +126,16 @@ namespace quizmoon.Controllers
         }
 
         [HttpPut]
-        [Route("update/question/{quizId}")]
-        public IActionResult UpdateQuestion(long quizId, [FromForm] NewQuestionDTO newQuestion)
+        [Route("update/question")]
+        public IActionResult UpdateQuestion([FromForm] NewQuestionDTO newQuestion)
         {
             if (newQuestion.Id == default)
                 return BadRequest(ResponseDTO.Error("missing id attribute"));
             ApplicationUser user = this.GetUser();
             if (user == default)
                 return Unauthorized();
-            Quiz quiz = this.GetQuiz(quizId);
             QuizQuestion quizQuestion = this.dbContext.QuizQuestions.FirstOrDefault(qq => qq.Id == newQuestion.Id);
+            Quiz quiz = (quizQuestion != default) ? this.GetQuiz(quizQuestion.QuizId) : null;
             if (quiz == default || quizQuestion == default)
                 return NotFound();
             if (quiz.CreatorId != user.Id)
@@ -161,7 +161,9 @@ namespace quizmoon.Controllers
             if (user == default)
                 return Unauthorized();
             QuizAnswer qa = this.dbContext.QuizAnswers.FirstOrDefault(qa => qa.Id == answerDTO.Id);
-            long quizId = this.dbContext.QuizQuestions.Select(qq => new { qq.Id, qq.QuizId }).FirstOrDefault(qq => qq.Id == questionId).QuizId;
+            if (qa == default)
+                return NotFound();
+            long quizId = this.dbContext.QuizQuestions.Select(qq => new { qq.Id, qq.QuizId }).FirstOrDefault(qq => qq.Id == questionId)?.QuizId ?? 0;
             Quiz quiz = this.GetQuiz(quizId);
             if (quiz == default || qa == default)
                 return NotFound();

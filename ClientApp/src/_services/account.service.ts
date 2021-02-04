@@ -1,3 +1,5 @@
+import { map } from 'rxjs/operators';
+import { QuizAnswer } from './../_models/quiz/QuizAnswer';
 import { QuizQuestion } from 'src/_models/quiz/QuizQuestion';
 import { Quiz } from './../_models/quiz/Quiz';
 import { Observable } from 'rxjs';
@@ -22,7 +24,10 @@ export class AccountService {
   }
 
   questionById(questionId: number) {
-    return this.httpClient.get<QuizQuestion>(`${environment.apiUrl}/quiz/question/${questionId}`);
+    return this.httpClient.get<QuizQuestion>(`${environment.apiUrl}/quiz/question/${questionId}`).pipe(map(x => {
+      x.answers = x.answers.map(qa => new QuizAnswer(qa.id, qa.text, qa.correct))
+      return x;
+    }));
   }
 
   createQuiz() {
@@ -31,9 +36,43 @@ export class AccountService {
     return this.httpClient.post(`${environment.apiUrl}/quiz/create`, fd);
   }
 
-  createQuestion(quizId: number) {
+  createQuestion(quizId: number): Observable<QuizQuestion> {
     let fd = new FormData();
     fd.append("text", "New question");
-    return this.httpClient.post(`${environment.apiUrl}/quiz/create/question/${quizId}`, fd);
+    return this.httpClient.post<QuizQuestion>(`${environment.apiUrl}/quiz/create/question/${quizId}`, fd);
+  }
+
+  createAnswer(questionId: number): Observable<QuizAnswer> {
+    let fd = new FormData();
+    fd.append("text", "New answer");
+    return this.httpClient.post<QuizAnswer>(`${environment.apiUrl}/quiz/create/answer/${questionId}`, fd);
+  }
+
+  updateQuiz(quiz: Quiz) {
+    let fd = new FormData();
+    fd.append("id", quiz.id.toString());
+    fd.append("name", quiz.name);
+    fd.append("category", quiz.category);
+    //fd.append("image", question.image);
+    return this.httpClient.put(`${environment.apiUrl}/quiz/update`, fd);
+  }
+
+  updateQuestion(question: QuizQuestion) {
+    let fd = new FormData();
+    console.log(question.image);
+    fd.append("image", question.image);
+    fd.append("text", question.text);
+    fd.append("id", question.id.toString());
+    return this.httpClient.put(`${environment.apiUrl}/quiz/update/question`, fd);
+  }
+
+  updateAnswer(answer: QuizAnswer, questionId: number): Observable<QuizAnswer> {
+    let fd = new FormData();
+    if (answer.image)
+      fd.append("image", answer.image);
+    fd.append("text", answer.text);
+    fd.append("id", answer.id.toString());
+    fd.append("correct", <string><any>answer.correct);
+    return this.httpClient.put<QuizAnswer>(`${environment.apiUrl}/quiz/update/answer/${questionId}`, fd).pipe(map(qa => new QuizAnswer(qa.id, qa.text, qa.correct)));
   }
 }

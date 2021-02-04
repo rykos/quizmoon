@@ -7,16 +7,16 @@
                 <div class="input-group-prepend">
                     <label class="input-group-text">Question Type</label>
                 </div>
-                <select class="custom-select" (change)="selectChange($event.target.value, question, 'type')">
-                    <option selected>Text</option>
+                <select class="custom-select" [(ngModel)]="question.type" name="type" (change)="selectChange($event.target.value, question, 'type')">
+                    <option>Text</option>
                     <option>Image</option>
                 </select>
                 <!--  -->
                 <div class="input-group-prepend">
                     <label class="input-group-text">Answers Type</label>
                 </div>
-                <select class="custom-select" (change)="selectChange($event.target.value, question, 'answersType')">
-                    <option selected>Text</option>
+                <select class="custom-select" [(ngModel)]="question.answersType" name="answersType" (change)="selectChange($event.target.value, question, 'answersType')">
+                    <option>Text</option>
                     <option>Image</option>
                 </select>
             </div>
@@ -31,8 +31,7 @@
         </form>
         <!-- answers -->
         <div>
-            <div *ngFor="let answer of answers; let i = index;" class="border py-3 px-1"
-                [ngClass]="{'dirty-answer': answer.dirty}">
+            <div *ngFor="let answer of answers; let i = index;" class="border py-3 px-1">
                 <form (ngSubmit)=onAnswerSubmit(answer.id)>
                     <!-- text -->
                     <div class="input-group mb-3" *ngIf="question.answersType == 'Text'">
@@ -50,7 +49,7 @@
                         <input type="checkbox" [(ngModel)]="answers[i].correct" name="correct"
                             (ngModelChange)="answerChange($event, answer)">
                     </div>
-                    <button class="btn btn-success">s</button>
+                    <button class="btn btn-success" [ngClass]="{'disabled': !answer.dirty}">s</button>
                 </form>
             </div>
         </div>

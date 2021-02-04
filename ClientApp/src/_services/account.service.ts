@@ -53,7 +53,8 @@ export class AccountService {
     fd.append("id", quiz.id.toString());
     fd.append("name", quiz.name);
     fd.append("category", quiz.category);
-    //fd.append("image", question.image);
+    if (quiz.avatar)
+      fd.append("avatar", quiz.avatar);
     return this.httpClient.put(`${environment.apiUrl}/quiz/update`, fd);
   }
 
@@ -63,6 +64,8 @@ export class AccountService {
     fd.append("image", question.image);
     fd.append("text", question.text);
     fd.append("id", question.id.toString());
+    fd.append("type", question.type);
+    fd.append("answersType", question.answersType);
     return this.httpClient.put(`${environment.apiUrl}/quiz/update/question`, fd);
   }
 

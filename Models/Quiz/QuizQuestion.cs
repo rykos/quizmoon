@@ -11,8 +11,8 @@ namespace quizmoon.Models
         public string Text { get; set; }
         public byte[] Image { get; set; }
         public List<QuizAnswer> Answers { get; set; }
-        public string Type { get; set; }
-        public string AnswersType { get; set; }
+        public string Type { get; set; } = "Text";
+        public string AnswersType { get; set; } = "Text";
 
         public Quiz Quiz { get; set; }
         public long QuizId { get; set; }
@@ -24,6 +24,8 @@ namespace quizmoon.Models
                 this.Id,
                 this.QuizId,
                 this.Text,
+                this.Type,
+                this.AnswersType,
                 Answers = this.Answers?.Select(a => a.DTO()).ToArray()
             };
         }

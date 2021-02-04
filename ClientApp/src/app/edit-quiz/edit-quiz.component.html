@@ -1,5 +1,8 @@
 <div class="container align-items-center align-content-center" *ngIf="quiz">
     <div>
+        <img [src]="quizImageLink()" width="128px" height="128px">
+        <br>
+        <input type="file" accept="image/*" (change)="handleFiles($event.target.files)">
         <h3>Edit <input type="text" [(ngModel)]="quiz.name" name="name"></h3>
         <h4>Category <input type="text" [(ngModel)]="quiz.category" name="category"></h4>
         <button class="btn btn-primary" (click)="updateQuiz()">Save</button>

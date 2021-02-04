@@ -142,6 +142,8 @@ namespace quizmoon.Controllers
                 return Unauthorized(ResponseDTO.Error("Dont even try to modify other people quizzes"));
 
             quizQuestion.Text = newQuestion.Text ?? "";
+            quizQuestion.Type = newQuestion.Type;
+            quizQuestion.AnswersType = newQuestion.AnswersType;
             if (newQuestion.Image != default)
                 quizQuestion.Image = SysHelper.FileToByteArray(newQuestion.Image);
 

@@ -53,6 +53,7 @@ export class AccountService {
     fd.append("id", quiz.id.toString());
     fd.append("name", quiz.name);
     fd.append("category", quiz.category);
+    fd.append("public", <string><any>quiz.public);
     if (quiz.avatar)
       fd.append("avatar", quiz.avatar);
     return this.httpClient.put(`${environment.apiUrl}/quiz/update`, fd);

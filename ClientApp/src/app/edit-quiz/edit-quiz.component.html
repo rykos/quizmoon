@@ -5,6 +5,8 @@
         <input type="file" accept="image/*" (change)="handleFiles($event.target.files)">
         <h3>Edit <input type="text" [(ngModel)]="quiz.name" name="name"></h3>
         <h4>Category <input type="text" [(ngModel)]="quiz.category" name="category"></h4>
+        <h4><label>Public</label> <input type="checkbox" class="mx-2" [(ngModel)]="quiz.public" name="public"></h4>
+        <br>
         <button class="btn btn-primary" (click)="updateQuiz()">Save</button>
     </div>
     <!-- questions -->

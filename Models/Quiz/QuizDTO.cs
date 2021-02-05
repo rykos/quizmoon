@@ -14,6 +14,7 @@ namespace quizmoon.Models
         [MinLength(3, ErrorMessage = "Quiz category cannot be shorter than 3 characters")]
         [MaxLength(20, ErrorMessage = "Quiz category cannot be longer than 20 characters")]
         public string Category { get; set; }
+        public bool Public { get; set; }
 
         public IFormFile Avatar { get; set; }
 

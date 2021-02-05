@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { QuizAnswer } from './../../_models/quiz/QuizAnswer';
 import { QuizQuestion } from 'src/_models/quiz/QuizQuestion';
 import { ActivatedRoute } from '@angular/router';
@@ -56,14 +57,26 @@ export class EditQuestionComponent implements OnInit {
   }
 
   answerChange(eve, answer: QuizAnswer) {
-    console.log(eve);
-    console.log(answer);
     answer.dirty = true;
   }
 
 
   handleFileUpload(files, target: any) {
     target.image = files[0];
+    target.dirty = true;
+  }
+
+  questionImgLink(questionId: number): string {
+    return `${environment.apiUrl}/image/quiz/question/${questionId}`;
+  }
+
+  answerImgLink(answerId: number): string {
+    return `${environment.apiUrl}/image/quiz/answer/${answerId}`;
+  }
+
+  imgError(eve: HTMLElement) {
+    eve.hidden = true;
+    console.log(eve);
   }
 
 }

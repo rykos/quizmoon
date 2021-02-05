@@ -117,7 +117,9 @@ namespace quizmoon.Controllers
             quiz.CreatorId = user.Id;
             quiz.Name = newQuizDTO.Name;
             quiz.Category = newQuizDTO.Category;
-            quiz.Image = SysHelper.FileToByteArray(newQuizDTO.Avatar);
+            quiz.Public = newQuizDTO.Public;
+            if (newQuizDTO.Avatar != default)
+                quiz.Image = SysHelper.FileToByteArray(newQuizDTO.Avatar);
 
             this.dbContext.Quizzes.Update(quiz);
             this.dbContext.SaveChanges();
@@ -219,7 +221,14 @@ namespace quizmoon.Controllers
             return Ok(question.DTO());
         }
 
-        //
+        [HttpGet]
+        [Route("top")]
+        public IActionResult GetQuizzes([FromQuery] int skip = 0)
+        {
+            object[] quizzes = this.dbContext.Quizzes.Where(q => q.Public)?.Skip(skip)?.Take(20)?.Select(q => q.DTO()).ToArray();
+            return Ok(quizzes);
+        }
+
         private ApplicationUser GetUser()
         {
             ApplicationUser user = this.dbContext.Users.FirstOrDefault(u => u.Id == User.FindFirst(ClaimTypes.NameIdentifier).Value);

@@ -9,6 +9,7 @@ namespace quizmoon.Models
         [Required]
         public string Name { get; set; }
         public string Category { get; set; }
+        public bool Public { get; set; }
         public IFormFile Avatar { get; set; }
     }
 }

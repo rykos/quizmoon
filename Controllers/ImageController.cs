@@ -20,7 +20,7 @@ namespace quizmoon.Controllers
         {
             byte[] imgBuffor = this.dbContext.Quizzes.Select(q => new { q.Id, q.Image }).FirstOrDefault(q => q.Id == quizId)?.Image;
             if (imgBuffor == default)
-                return Ok();
+                return NotFound();
             return File(imgBuffor, "image/jpeg");
         }
 
@@ -30,7 +30,7 @@ namespace quizmoon.Controllers
         {
             byte[] imgBuffor = this.dbContext.QuizQuestions.Select(qq => new { qq.Id, qq.Image }).FirstOrDefault(q => q.Id == questionId)?.Image;
             if (imgBuffor == default)
-                return Ok();
+                return NotFound();
             return File(imgBuffor, "image/jpeg");
         }
 
@@ -38,9 +38,9 @@ namespace quizmoon.Controllers
         [Route("quiz/answer/{answerId}")]
         public IActionResult GetAnswerImage(long answerId)
         {
-            byte[] imgBuffor = this.dbContext.QuizQuestions.Select(qa => new { qa.Id, qa.Image }).FirstOrDefault(q => q.Id == answerId)?.Image;
+            byte[] imgBuffor = this.dbContext.QuizAnswers.Select(qa => new { qa.Id, qa.Image }).FirstOrDefault(q => q.Id == answerId)?.Image;
             if (imgBuffor == default)
-                return Ok();
+                return NotFound();
             return File(imgBuffor, "image/jpeg");
         }
     }

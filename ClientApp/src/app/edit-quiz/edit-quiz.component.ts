@@ -19,11 +19,11 @@ export class EditQuizComponent implements OnInit {
     this.accountService.quizById(this.route.snapshot.params.id).subscribe(q => {
       q.quizQuestions.sort((a, b) => a.id - b.id);
       this.quiz = q;
+      console.log(q);
     });
   }
 
   newQuestion() {
-    console.log("dupa");
     this.accountService.createQuestion(this.quiz.id).subscribe(x => {
       this.quiz.quizQuestions.push(x);
     });

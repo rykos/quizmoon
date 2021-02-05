@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace quizmoon.Models
@@ -16,8 +17,11 @@ namespace quizmoon.Models
         [MinLength(3, ErrorMessage = "Quiz category cannot be shorter than 3 characters")]
         [MaxLength(20, ErrorMessage = "Quiz category cannot be longer than 20 characters")]
         public string Category { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public bool Public { get; set; } = false;
 
         public List<QuizQuestion> QuizQuestions { get; set; }
+
 
         public byte[] Image { get; set; }
         public string CreatorId { get; set; }
@@ -29,6 +33,7 @@ namespace quizmoon.Models
                 this.Id,
                 this.Name,
                 this.Category,
+                this.Public,
                 QuizQuestions = this.QuizQuestions?.Select(x => x.DTO()).ToArray()
             };
         }

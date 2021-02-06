@@ -30,13 +30,15 @@ export class EditQuizComponent implements OnInit {
   }
 
   updateQuiz() {
-    this.accountService.updateQuiz(this.quiz).subscribe(x => {
+    this.accountService.updateQuiz(this.quiz).subscribe(x => { });
+  }
 
-    });
+  removeQuiz() {
+    this.accountService.removeQuiz(this.quiz).subscribe(x => { })
   }
 
   quizImageLink(): string | SafeUrl {
-    if(this.newAvatarLink){
+    if (this.newAvatarLink) {
       return this.newAvatarLink;
     }
     return `${environment.apiUrl}/image/quiz/avatar/${this.quiz.id}`;

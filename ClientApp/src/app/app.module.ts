@@ -14,6 +14,10 @@ import { QuizCrudComponent } from './quiz-crud/quiz-crud.component';
 import { ProfileComponent } from './profile/profile.component';
 import { EditQuizComponent } from './edit-quiz/edit-quiz.component';
 import { EditQuestionComponent } from './edit-question/edit-question.component';
+import { QuizBrowserComponent } from './quiz-browser/quiz-browser.component';
+import { QuizTileComponent } from './quiz-tile/quiz-tile.component';
+import { ImageComponent } from './image/image.component';
+import { QuizDetailsComponent } from './quiz-details/quiz-details.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,11 @@ import { EditQuestionComponent } from './edit-question/edit-question.component';
     QuizCrudComponent,
     ProfileComponent,
     EditQuizComponent,
-    EditQuestionComponent
+    EditQuestionComponent,
+    QuizBrowserComponent,
+    QuizTileComponent,
+    ImageComponent,
+    QuizDetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,16 @@
+import { SafeUrl } from '@angular/platform-browser';
+import { Component, Input, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-image',
+  templateUrl: './image.component.html',
+  styleUrls: ['./image.component.css']
+})
+export class ImageComponent implements OnInit {
+  @Input()
+  link: string | SafeUrl;
+  constructor() { }
+
+  ngOnInit(): void { }
+
+}

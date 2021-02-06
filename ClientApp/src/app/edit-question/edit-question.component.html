@@ -23,7 +23,8 @@
             <div class="input-group mb-3" *ngIf="question.type == 'Text'">
                 <input type="text" class="form-control" placeholder="Question" [(ngModel)]="question.text" name="text">
             </div>
-            <img [src]="questionImgLink(question.id)" width="128px" height="128px" (error)="imgError($event.target)">
+            <!-- <img [src]="questionImgLink(question.id)" width="128px" height="128px" (error)="imgError($event.target)"> -->
+            <app-image [link]="questionImgLink(question.id)"></app-image>
             <div *ngIf="question.type == 'Image'">
                 <label>Image</label>
                 <input type="file" (change)="handleFileUpload($event.target.files, question)">
@@ -40,7 +41,8 @@
                             (ngModelChange)="answerChange($event, answer)">
                     </div>
                     <!-- image -->
-                    <img [src]="answerImgLink(answer.id)" width="128px" height="128px" (error)="imgError($event.target)">
+                    <!-- <img [src]="answerImgLink(answer.id)" width="128px" height="128px" (error)="imgError($event.target)"> -->
+                    <app-image [link]="answerImgLink(answer.id)"></app-image>
                     <div class="input-group mb-3" *ngIf="question.answersType == 'Image'">
                         <label>Image</label>
                         <input type="file" (change)="handleFileUpload($event.target.files, answer)">

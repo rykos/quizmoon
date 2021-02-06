@@ -1,8 +1,8 @@
 <div class="container">
     <h2>My Quizzes</h2>
     <div class="d-flex flex-wrap">
-        <div class="quiz-box shadow" *ngFor="let quiz of quizzes" routerLink="/edit/quiz/{{quiz.id}}">{{quiz.name}}</div>
+        <app-quiz-tile *ngFor="let quiz of quizzes" [quiz]="quiz" routerLink="/edit/quiz/{{quiz.id}}"></app-quiz-tile>
     </div>
     <button class="btn btn-primary" (click)="logout()">Logout</button>
-    <button class="btn btn-primary" [routerLink]="['/quiz/new']">New Quiz</button>
+    <button class="btn btn-primary" (click)="createQuiz()">New Quiz</button>
 </div>

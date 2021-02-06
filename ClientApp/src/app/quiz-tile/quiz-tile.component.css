@@ -1,0 +1,22 @@
+.quiz-tile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    background-color: yellow;
+    border-radius: 15px;
+    margin: 10px;
+    box-shadow: black 0 0 6px;
+    transition: transform 80ms;
+    cursor: pointer;
+    color: black;
+}
+
+.quiz-tile:hover{
+    transform: scale(1.1);
+}
+
+a:link{
+    text-decoration: none;
+}

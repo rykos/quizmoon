@@ -1,6 +1,7 @@
 <div class="container align-items-center align-content-center" *ngIf="quiz">
     <div>
-        <img [src]="quizImageLink()" width="128px" height="128px">
+        <!-- <img [src]="quizImageLink()" width="128px" height="128px" onerror="this.src='/assets/images/ph.png';"> -->
+        <app-image [link]="quizImageLink()"></app-image>
         <br>
         <input type="file" accept="image/*" (change)="handleFiles($event.target.files)">
         <h3>Edit <input type="text" [(ngModel)]="quiz.name" name="name"></h3>
@@ -8,6 +9,7 @@
         <h4><label>Public</label> <input type="checkbox" class="mx-2" [(ngModel)]="quiz.public" name="public"></h4>
         <br>
         <button class="btn btn-primary" (click)="updateQuiz()">Save</button>
+        <button class="btn btn-primary" (click)="removeQuiz()">Delete</button>
     </div>
     <!-- questions -->
     <div class="d-flex flex-wrap">

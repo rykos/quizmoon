@@ -1,3 +1,4 @@
+import { QuizBrowserComponent } from './quiz-browser/quiz-browser.component';
 import { EditQuestionComponent } from './edit-question/edit-question.component';
 import { EditQuizComponent } from './edit-quiz/edit-quiz.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -9,6 +10,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/browse', pathMatch: 'full' },
+  { path: 'browse', component: QuizBrowserComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },

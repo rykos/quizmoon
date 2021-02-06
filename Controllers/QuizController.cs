@@ -186,6 +186,69 @@ namespace quizmoon.Controllers
         }
         #endregion
 
+        #region Delete
+        [HttpDelete]
+        [Route("delete/quiz/{quizId}")]
+        public IActionResult DeleteQuiz(long quizId)
+        {
+            ApplicationUser user = this.GetUser();
+            if (user == default)
+                return Unauthorized();
+            Quiz quiz = this.GetQuiz(quizId);
+            if (quiz == default)
+                return NotFound();
+            if (quiz.CreatorId != user.Id)
+                return BadRequest();
+
+            this.dbContext.Quizzes.Remove(quiz);
+            this.dbContext.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("delete/question/{questionId}")]
+        public IActionResult DeleteQuestion(long questionId)
+        {
+            ApplicationUser user = this.GetUser();
+            if (user == default)
+                return Unauthorized();
+            QuizQuestion question = this.dbContext.QuizQuestions.FirstOrDefault(q => q.Id == questionId);
+            if (question == default)
+                return NotFound();
+            Quiz quiz = this.GetQuiz(question.Id);
+            if (quiz.CreatorId != user.Id)
+                return BadRequest();
+
+            this.dbContext.QuizQuestions.Remove(question);
+            this.dbContext.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("delete/answer/{answerId}")]
+        public IActionResult DeleteAnswer(long answerId)
+        {
+            ApplicationUser user = this.GetUser();
+            if (user == default)
+                return Unauthorized();
+            QuizAnswer answer = this.dbContext.QuizAnswers.FirstOrDefault(qa => qa.Id == answerId);
+            if (answer == default)
+                return NotFound();
+            string CreatorId = this.dbContext.QuizAnswers.Include(qa => qa.QuizQuestion).ThenInclude(qq => qq.Quiz).Select(qa => new { qa.QuizQuestion.Quiz.CreatorId, qa.Id })
+                .FirstOrDefault(qa => qa.Id == answerId).CreatorId;
+            if (user.Id != CreatorId)
+                return BadRequest();
+
+            this.dbContext.QuizAnswers.Remove(answer);
+            this.dbContext.SaveChanges();
+
+            return Ok();
+        }
+
+        #endregion
+
         [HttpGet]
         [Route("my")]
         public IActionResult MyQuizzes()
@@ -225,7 +288,7 @@ namespace quizmoon.Controllers
         [Route("top")]
         public IActionResult GetQuizzes([FromQuery] int skip = 0)
         {
-            object[] quizzes = this.dbContext.Quizzes.Where(q => q.Public)?.Skip(skip)?.Take(20)?.Select(q => q.DTO()).ToArray();
+            object[] quizzes = this.dbContext.Quizzes.Where(q => q.Public)?.OrderBy(q => q.Id).Skip(skip)?.Take(20)?.Select(q => q.DTO()).ToArray();
             return Ok(quizzes);
         }
 

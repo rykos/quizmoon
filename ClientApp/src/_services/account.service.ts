@@ -30,10 +30,10 @@ export class AccountService {
     }));
   }
 
-  createQuiz() {
+  createQuiz(): Observable<Quiz> {
     let fd = new FormData();
     fd.append("name", "new quiz");
-    return this.httpClient.post(`${environment.apiUrl}/quiz/create`, fd);
+    return this.httpClient.post<Quiz>(`${environment.apiUrl}/quiz/create`, fd);
   }
 
   createQuestion(quizId: number): Observable<QuizQuestion> {
@@ -59,6 +59,10 @@ export class AccountService {
     return this.httpClient.put(`${environment.apiUrl}/quiz/update`, fd);
   }
 
+  removeQuiz(quiz: Quiz) {
+    return this.httpClient.delete(`${environment.apiUrl}/quiz/delete/${quiz.id}`);
+  }
+
   updateQuestion(question: QuizQuestion) {
     let fd = new FormData();
     console.log(question.image);
@@ -78,5 +82,9 @@ export class AccountService {
     fd.append("id", answer.id.toString());
     fd.append("correct", <string><any>answer.correct);
     return this.httpClient.put<QuizAnswer>(`${environment.apiUrl}/quiz/update/answer/${questionId}`, fd).pipe(map(qa => new QuizAnswer(qa.id, qa.text, qa.correct)));
+  }
+
+  getQuizzes(skip: number = 0): Observable<Quiz[]> {
+    return this.httpClient.get<Quiz[]>(`${environment.apiUrl}/quiz/top`);
   }
 }
